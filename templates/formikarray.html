@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form with Array of Input Fields</title>
+<style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<h2>Array Input Form</h2>
+
+<form id="myForm">
+  <div id="container">
+    <!-- Input field containers will be added here -->
+  </div>
+  <button type="button" onclick="addContainer()">Add Input Box Set</button>
+  <button type="button" onclick="undo()">Undo</button>
+  <button type="submit" onclick="submitto()">Submit</button>
+</form>
+
+<div id="output"></div>
+
+<script>
+let containerCount = 0;
+
+function addContainer() {
+  const form = document.getElementById('myForm');
+  const container = document.createElement('div');
+  container.className = 'inputContainer';
+  
+  container.id = `container-${containerCount}`;
+  
+  container.innerHTML = `
+
+    <label for="username-${containerCount}">Username:</label>
+    <input type="text" id="username-${containerCount}" name="username" placeholder="username"/>
+
+    <label for="password-${containerCount}">Password:</label>
+    <input type="text" id="password-${containerCount}" name="password" placeholder="password"/>
+
+    <label for="mac_address-${containerCount}">Mac Address:</label>
+    <input type="text" id="mac_address-${containerCount}" name="mac_address" placeholder="Mac address"/>
+
+    <label for="camera-${containerCount}">Camera Type:</label>
+    <select id="camera-${containerCount}" name="camera_type">
+      <option value="0">CpPlus</option>
+      <option value="1">Hikvision</option>
+      <option value="2">Dahua</option>
+    </select>
+ <input type="button" onclick="check('${containerCount}')" value="Check MAC Address">
+
+    <div id="response">
+    <video id="text-video" src=''  width="320" height="240" autoplay ></video>
+  </div>
+
+  `;
+containerCount++;
+
+  document.getElementById('container').appendChild(container);
+
+}
+
+function undo() {
+  const container = document.getElementById(`container-${containerCount - 1}`);
+
+  if (container) {
+    container.parentNode.removeChild(container);
+    containerCount--;
+  }
+}
+
+async function check(macFieldId){
+
+const username = document.getElementById(`username-${macFieldId}`).value;
+const password = document.getElementById(`password-${macFieldId}`).value;
+const cameratype = document.getElementById(`camera-${macFieldId}`).value;
+const mac_address = document.getElementById(`mac_address-${macFieldId}`).value;
+console.log(username,password)
+      console.log('ok')
+      const response = await fetch('http://127.0.0.1:8080/stream_check', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username:username,
+        password:password,
+        cameratype:cameratype,
+        mac_address:mac_address
+      })
+    });
+    http://127.0.0.1:8080/stream_check
+      if (response.ok) {
+            const responseData = await response.json();
+            const videoStreamUrl = responseData.video_stream_url;
+            console.log(videoStreamUrl)
+            document.querySelector('#text-video').src = videoStreamUrl;
+            console.log('Video stream URL received and set successfully:', videoStreamUrl);
+        } else {
+            console.error('Failed to receive video stream URL:', response.status);
+        }
+        console.log('Data sent successfully!');
+}
+
+async function displayOutput() {
+  const form = document.getElementById('myForm');
+
+  var jsonarr = [];
+  for (var i = 0; i < containerCount; i++) {
+    jsonarr.push({
+      [`username`]: form.querySelector(`#username-${i}`).value,
+      [`password`]: form.querySelector(`#password-${i}`).value,
+      [`mac_address`]: form.querySelector(`#mac_address-${i}`).value,
+      [`cameratype`]: form.querySelector(`#camera-${i}`).value
+    });
+  }
+  console.log(jsonarr);
+
+  try {
+    const response = await fetch('http://127.0.0.1:8080/submit', {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        count:containerCount,
+        value: jsonarr
+      })
+    });
+
+   // if (response.ok) {
+
+     //     console.log('ok')
+       //   url="http://127.0.0.1:8080/video_feed/"+macaddress;
+         // document.querySelector('#text-video').src=url;
+
+          //console.log(url)
+      //console.log('Data sent successfully!');
+    //} else {
+      //console.error('Failed to send data:', response.status);
+    //}
+  } catch (error) {
+
+    console.error('Error during fetch operation:', error);
+  }
+}
+
+function submitto(){
+console.log('submit')
+  event.preventDefault(); // Prevent default form submission
+  displayOutput(); // Call function to display output
+}
+
+// Adding an event listener to the form for submission
+//document.getElementById('myForm').addEventListener('submit', function(event) {
+  //event.preventDefault(); // Prevent default form submission
+ // displayOutput(); // Call function to display output
+//});
+</script>
+
+</body>
+</html>

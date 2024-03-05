@@ -1,0 +1,5 @@
+def port1():
+     url='https://api.ipify.org/'
+     response=requests.get(url)
+     ip=response.text
+     return ip

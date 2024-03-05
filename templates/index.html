@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<script>
+  async function create(event){
+         event.preventDefault();
+        const name=document.querySelector('#fname').value;
+        const password=document.querySelector('#password').value;
+        const macaddress=document.querySelector('#mac').value;
+        const camera=document.querySelector('#camera').value;
+
+        const response= await fetch('http://127.0.0.1:8080/submit',{
+          method:'POST',     
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+            name:name,
+            password:password,
+            macaddress:macaddress,
+            cameratype:camera
+          })
+        })
+        console.log('hi')
+
+        if(response){
+          console.log('ok')
+          url="http://127.0.0.1:8080/video_feed/"+macaddress;
+          document.querySelector('#text-video').src=url;
+         
+          console.log(url)
+        }
+        else{
+          console.log("error")
+        }
+  }
+  </script>
+</head>
+<body>
+
+<h3>Contact Form</h3>
+
+<div class="container">
+  <form  id="myForm">
+    <label for="fname">UserName</label>
+    <input type="text" id="fname" name="name" placeholder="Your name..">
+     
+    <label for="password">password</label>
+    <input type="text" id="password" name="password" placeholder="Your last name..">
+
+    <label for="fname">Macaddress</label>
+    <input type="text" id="mac" name="macaddress" placeholder="Your name..">
+
+
+    <label for="camera">Camera Type</label>
+    <select id="camera" name="cameratype">
+      <option value="0">CpPlus</option>
+      <option value="1">Hikvision</option>
+      <option value="2">Dahua</option>
+    </select>
+    <input type="submit" value="Submit" onclick="create(event)">
+  </form>
+  <div id="response"> 
+    <video id="text-video" src=''  width="320" height="240" autoplay ></video>
+  </div>
+
+</div>
+
+</body>
+</html>
