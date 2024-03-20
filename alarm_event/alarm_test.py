@@ -6,7 +6,7 @@ import threading
 import time
 import cv2
 from video import ffmbef_test
-
+from cloudservice import cloudcon
 app = Flask(__name__)
 
 class MotionDetectionApp:
@@ -20,29 +20,24 @@ class MotionDetectionApp:
         self.mac_address=None
 
     def start_motion_detection(self):
-        print("srat")
-
 
         while self.motion_detection_enabled:
             print("one")
-
             current_date = datetime.now().date()
-            current_time = current_date.strftime("%H:%M")
-            if (self.selected_date == current_date):
-                print("true")
-            else:
-                print("false")
-            print("sed",self.selected_date)
-            print("cu",current_date)
-            if (self.selected_date == current_date and self.selected_start_time <= current_time <= self.selected_end_time):
+            current_date_str = current_date.strftime("%Y-%m-%d")
+            current_ti=datetime.now()
+            current_time = current_ti.strftime("%H:%M")
+            if (self.selected_date == current_date_str):
+                print('date')
+                if ( self.selected_start_time <= current_time <= self.selected_end_time):
+                    print("time")
+                    self.check_camera_availability()
 
-                self.check_camera_availability()
+                    if self.camera_available:
+                        print("ttrue")
+                        self.check_motion_detection()
 
-                if self.camera_available:
-                    print("ttrue")
-                    self.check_motion_detection()
-
-            time.sleep(1)
+            time.sleep(5)
 
     def check_motion_detection(self):
         ip_address=ffmbef_test.find_camera_ip(self.mac_address)
@@ -74,7 +69,7 @@ class MotionDetectionApp:
                         print("Alert: Authentication failure. Check username and password.")
                     elif previous_response_content == "Error: No Events" and current_response_content != "Error: No Events":
                         print(f"Alert: Motion detected! Response changed to: '{current_response_content}'")
-
+                        cloudcon.send_pip(self.mac_address)
                     previous_response_content = current_response_content
                 except Exception as e:
                     print(f"Error: {e}")

@@ -1,6 +1,6 @@
 from video import  ffmbef_test as vi
 from setup import wifitest, cam_config
-from flask import Flask
+from flask import Flask ,request
 import subprocess
 from connectionStatus import publicipfind , check_userpass
 #from cloudservice import cloudcon
@@ -78,6 +78,21 @@ def activate_motion_detection():
 @app.route('/deactivate_alarm')
 def deactivate_motion_detection():
     return alarm_test.deactivate_motion_detection()
+
+#user can change the username and password
+
+@app.route('/change_pass')
+def chnge_pass():
+    user = request.json.get('name')
+    password = request.json.get('password')
+    mac_address = request.json.get('mac_address')
+    return check_userpass.changepass(user ,password ,mac_address)
+
+#
+@app.route('/delete_cam' ,methods=['POST'])
+def deletecamera():
+    mac_address=request.json.get('mac_address')
+    return check_userpass.delete_camera(mac_address)
 #for windows
 def wifienable():
     return subprocess.run(["netsh", "interface", "set", "interface", "Wi-Fi", "enabled"])
