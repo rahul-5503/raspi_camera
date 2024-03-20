@@ -6,15 +6,15 @@
         "user": "admin"
     },
     {
-        "cameratype": "2",
-        "macaddress": "e0:50:8b:97:03:e1",
-        "password": "admin@123",
-        "user": "admin"
-    },
-    {
         "cameratype": "1",
         "macaddress": "24:b1:05:72:7c:4e",
         "password": "Squadcube12",
+        "user": "admin"
+    },
+    {
+        "cameratype": "2",
+        "macaddress": "e0:50:8b:97:03:e1",
+        "password": "admin@123",
         "user": "admin"
     }
 ]

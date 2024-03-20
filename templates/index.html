@@ -44,7 +44,7 @@ input[type=submit]:hover {
         const macaddress=document.querySelector('#mac').value;
         const camera=document.querySelector('#camera').value;
 
-        const response= await fetch('http://127.0.0.1:8080/submit',{
+        const response= await fetch('http://127.0.0.1:9098/submit',{
           method:'POST',     
           headers:{
             'Content-Type':'application/json'
@@ -58,16 +58,12 @@ input[type=submit]:hover {
         })
         console.log('hi')
 
-        if(response){
           console.log('ok')
-          url="http://127.0.0.1:8080/video_feed/"+macaddress;
+          url="http://127.0.0.1:9098/video_feed/"+macaddress;
           document.querySelector('#text-video').src=url;
          
           console.log(url)
-        }
-        else{
-          console.log("error")
-        }
+
   }
   </script>
 </head>

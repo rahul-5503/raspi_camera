@@ -1,0 +1,15 @@
+
+1- index - wifi or ethernet, if wifi ==  display(wifitest) , textwifi then network_check
+           if ethernet == network_check(wifitest)
+           then publicipfind(thread in wifitest) ,get_ip_address ,getbest_ip()
+           then  send_pip()
+
+
+2- if network_check ==200 submit (cam_config)
+           then send corrent mac_address enter
+            and start the thread to check the
+            then userpass.conn_check(),
+                 find_Status() -- status of the camera in the network or not
+                 ,send_conn()
+           then
+            video_feed (to check)

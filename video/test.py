@@ -132,7 +132,7 @@ def video_feed(mac_address):
 
 @app.route('/detail')
 def index():
-    return render_template('index.html')
+    return render_template('alarm.html')
 
 @app.route('/')
 def setup():

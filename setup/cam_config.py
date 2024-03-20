@@ -4,7 +4,7 @@ import scapy.all as scapy
 import requests
 import threading
 from cloudservice import cloudcon
-
+from connectionStatus import check_userpass
 #app = Flask(__name__)
 
 def find_uap(mac):
@@ -18,11 +18,12 @@ def find_uap(mac):
 
 #@app.route('/submit', methods=['POST'])
 def submit():
-    user = request.form.get('name')
-    password = request.form.get('password')
-    cameratype = request.form.get('cameratype')
-    macaddress = request.form.get('macaddress')
 
+    user =  request.json.get('name')
+    password = request.json.get('password')
+    cameratype = request.json.get('cameratype')
+    macaddress = request.json.get('macaddress')
+    print(user , password)
     if not user or not password:
         return jsonify({'error': 'User and password are required.'}), 400
     # set a data in json formate
@@ -49,14 +50,17 @@ def submit():
     data={
         'macaddress':macaddress
     }
+    t3 = threading.Thread(target=check_userpass.conn_check)
+    t3.start()
     cloudcon.send_pip(data)
-    return macaddress
+    return jsonify({'message': 'Success'}), 200
+
 
 #@app.route('/details')
 def details():
-    return render_template('index.html')
+    return render_template('alarm.html')
 
 
 #if __name__ == '__main__':
- #   app.run(host='0.0.0.0', port=8100, debug=True)
+ #  app.run(host='0.0.0.0', port=8080, debug=True)
     

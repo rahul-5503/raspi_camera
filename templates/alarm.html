@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Detection App</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Motion Detection App</h1>
+
+    <label for="toggleSwitch">Activate Motion Detection:</label>
+    <input type="checkbox" id="toggleSwitch" onchange="toggleMotionDetection()" {% if motion_detection_enabled %}checked{% endif %}>
+    
+    <form action="http://127.0.0.1:9098/activate_alarm" method="post" id="motionForm" {% if not motion_detection_enabled %}class="hidden"{% endif %}>
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <label for="start_time">Select Start Time:</label>
+        <input type="time" id="start_time" name="start_time" required>
+        <br>
+        <label for="end_time">Select End Time:</label>
+        <input type="time" id="end_time" name="end_time" required>
+        <br>
+        <label for="mac_address">Enter the mac_address:</label>
+        <input type="text" id="mac_address" name="mac_address" required>
+        <br>
+        <button type="submit">Activate Motion Detection</button>
+    </form>
+
+    <a href="http://127.0.0.1:9098/deactivate_alarm">Deactivate Motion Detection</a>
+
+    <script>
+        function toggleMotionDetection() {
+            var motionForm = document.getElementById("motionForm");
+            var toggleSwitch = document.getElementById("toggleSwitch");
+
+            if (toggleSwitch.checked) {
+                motionForm.classList.remove("hidden");
+            } else {
+                motionForm.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+</html>

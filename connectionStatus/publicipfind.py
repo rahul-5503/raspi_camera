@@ -40,7 +40,7 @@ def publicip():
        ip_addresses=get_ip_addresses()
        if ip_addresses == oldip:
             print("old IP address:",ip_addresses)
-
+            #cloudcon.send_pip(oldip)
             #return True
        else:
          oldip=ip_addresses

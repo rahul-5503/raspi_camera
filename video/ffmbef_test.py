@@ -57,14 +57,14 @@ def generate_stream(rtsp_url):
 #@app.route('/video_feed/<mac_address>')
 def video_feed(mac_address):
     ip_address = find_camera_ip(mac_address)
-    #print(ip_address)
+    print(ip_address)
     userapass=find_uap(mac_address)#return the below data from user_data.json file
     if userapass != 'not found':
             username =userapass['user']
             password =userapass['password']
             cameratype = userapass['cameratype']
 
-            #print("username",username)
+            print("username",username)
     else:
           return jsonify({'message': 'Data reterived failed.'})
     if ip_address:

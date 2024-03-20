@@ -1,7 +1,7 @@
 from flask import Flask,Response,request,json,render_template,jsonify
 import subprocess,time,requests
-import os,requests,socket
-
+import os,requests,socket ,threading
+from connectionStatus import publicipfind
 #app= Flask(__name__)
 
 #create a new connection by creating a xml file by wifi username
@@ -70,6 +70,8 @@ def network_check():
     url="https://google.co.in/"
     resp =requests.get(url)
     if resp.status_code == 200:
+        t2 = threading.Thread(target=publicipfind.publicip)
+        t2.start()
         return jsonify({'message':200}),200
     else:
         return jsonify({'message':400}),404

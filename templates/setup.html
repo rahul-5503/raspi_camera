@@ -26,7 +26,7 @@
                     save.style.display="none";
                     const ether=document.querySelector('#ether-ch');
                     //if ethernet is selected this will work to check internet is connected
-		            const response= await fetch('http://127.0.0.1:8080/network_check');
+		            const response= await fetch('http://127.0.0.1:9098/network_check');
                     if(!response.ok){
                         ether.innerHTML = 'Check ethernet'
                     throw new Error('failed to connect to eathernet')
@@ -42,7 +42,7 @@
                 try {
                     //if wifi is selected this will work
                     //it return all the wifi nearby
-                    const response = await fetch('http://127.0.0.1:8080/display');
+                    const response = await fetch('http://127.0.0.1:9098/display');
                     if (!response.ok) {
                         throw new Error('Failed to fetch available networks.');
                     }
@@ -71,7 +71,7 @@
             const password = pass.value;
             console.log(username, password);
             //wifi connecte by usename and password
-            const response = await fetch('http://127.0.0.1:8080/testwifi',{
+            const response = await fetch('http://127.0.0.1:9098/testwifi',{
                 method: 'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -87,8 +87,8 @@
             if (response.ok){
                 const ether=document.querySelector('#ether-ch');
                 //check there is connection
-                const response= await fetch('http://127.0.0.1:8080/network_check');
-                //const port= await fetch('http://127.0.0.1:8080/publicip');
+                const response= await fetch('http://127.0.0.1:9098/network_check');
+                //const port= await fetch('http://127.0.0.1:9098/publicip');
                 //display ethernet/wifi is connection
                 if(!response.ok){
                     ether.innerHTML = 'Check password'
@@ -131,7 +131,7 @@
     <input id="passw" type="text"  name="passw" placeholder="your wifi password"/>
 	<input type="submit" id="buttonsave" value="submit" onclick="connect(event)"/>
 </form>
-<a href="http://127.0.0.1:8080/details" id="ether-ch"></a>
+<a href="http://127.0.0.1:9098/details" id="ether-ch"></a>
 </div>
 </body>
 </html>
