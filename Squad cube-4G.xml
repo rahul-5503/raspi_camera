@@ -18,7 +18,7 @@
             <sharedKey>
                 <keyType>passPhrase</keyType>
                 <protected>false</protected>
-                <keyMaterial>Squad@123</keyMaterial>
+                <keyMaterial>pasword</keyMaterial>
             </sharedKey>
         </security>
     </MSM>
