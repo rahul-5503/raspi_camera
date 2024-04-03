@@ -102,7 +102,6 @@ def delete_camera(mac_address):
             updated_data.append(entry)
         else:
             removed_entry = entry
-
     if removed_entry:
         print(f"Entry removed: {removed_entry}")
 
