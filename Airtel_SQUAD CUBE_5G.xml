@@ -3,7 +3,7 @@
     <name>Airtel_SQUAD CUBE_5G</name>
     <SSIDConfig>
         <SSID>
-            <name>Airtel_SQUAD CUBE_5G</name>
+            <name>name</name>
         </SSID>
     </SSIDConfig>
     <connectionType>ESS</connectionType>
@@ -18,7 +18,7 @@
             <sharedKey>
                 <keyType>passPhrase</keyType>
                 <protected>false</protected>
-                <keyMaterial>Squadcube41</keyMaterial>
+                <keyMaterial>password</keyMaterial>
             </sharedKey>
         </security>
     </MSM>
